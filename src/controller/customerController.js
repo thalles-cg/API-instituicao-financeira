@@ -25,7 +25,13 @@ export const create = async (req, res) => {
 
 export const fetch = async (req, res) => {
    try {
-      return res.json("OK")
+      const customers = await Customer.find();
+
+      res.status(200).json({
+         success: true,
+         message: "Customers sent correctly",
+         data: customers
+      });
    } catch (error) {
       res.status(500).json({error: "Internal Server Error."})
    }
