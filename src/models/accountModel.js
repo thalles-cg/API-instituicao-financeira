@@ -38,6 +38,8 @@ const accountSchema = new Schema({
   timestamps: true
 });
 
+accountSchema.index({ branch: 1, number: 1 }, { unique: true });
+
 accountSchema.pre('save', async function(next) {
   if (this.isNew) {
     try {

@@ -34,6 +34,9 @@ export const create = async (req, res) => {
 
     res.status(201).json(responseAccount);
   } catch (err) {
+    if (err.code === 11000){
+      return res.status(400).json({error: "This combination of branch and number already exists."})
+    }
     res.status(400).json({ error: 'Failed to create account', details: err.message });
   }
 };
