@@ -13,7 +13,7 @@ export const create = async (req, res) => {
 
         res.status(201).json(responseTransaction);
     } catch (err) {
-        res.status(400).json({ error: 'Erro ao criar transação', details: err.message });
+        res.status(400).json({ error: 'Error in transaction creation', details: err.message });
     }
 };
 

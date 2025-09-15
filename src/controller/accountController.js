@@ -7,7 +7,7 @@ export const create = async (req, res) => {
 
     const existingCustomer = await Customer.findById(customer);
     if (!existingCustomer) {
-      return res.status(404).json({ error: 'Cliente não encontrado' });
+      return res.status(404).json({ error: 'Customer not found' });
     }
 
     const newAccount = new Account({
@@ -34,7 +34,7 @@ export const create = async (req, res) => {
 
     res.status(201).json(responseAccount);
   } catch (err) {
-    res.status(400).json({ error: 'Erro ao criar conta', details: err.message });
+    res.status(400).json({ error: 'Failed to create account', details: err.message });
   }
 };
 

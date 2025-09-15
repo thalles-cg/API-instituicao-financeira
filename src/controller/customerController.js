@@ -8,10 +8,10 @@ export const create = async (req, res) => {
 
       if (customerExist) {
          if (customerExist.email === email) {
-            return res.status(400).json({message: "E-mail já cadastrado."});
+            return res.status(400).json({message: "This email is already in use."});
          }
          if (customerExist.cpf === cpf){
-            return res.status(400).json({message: "CPF já cadastrado."})
+            return res.status(400).json({message: "This CPF is already registered."})
          }
       }
 

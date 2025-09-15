@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { isValidCPF } from '../services/cpfValidatorService.js';
+import { isValidEmail } from '../services/emailValidatorService.js';
 import CounterService from '../services/counterService.js';
 const { Schema, model } = mongoose;
 
@@ -12,10 +13,18 @@ const customerSchema = new Schema({
     unique: true,
     validate: {
       validator: isValidCPF,
-      message: 'Invalid CPF'
+      message: props => `${props.value} is not a valid CPF!`
     }
   },
-  email: { type: String, required: true, unique: true },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator: isValidEmail,
+      message: props => `${props.value} is not a valid e-mail!`
+    }
+  },
   accounts: [{ type: String, ref: 'Account' }]
 }, {
   timestamps: true
