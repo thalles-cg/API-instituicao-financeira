@@ -19,7 +19,7 @@ export const create = async (req, res) => {
       });
 
    } catch (error) {
-      res.status(500).json({error: "Internal Server Error."})
+      res.status(500).json({error: error.message})
    }
 }
 
@@ -33,6 +33,6 @@ export const fetch = async (req, res) => {
          data: customers
       });
    } catch (error) {
-      res.status(500).json({error: "Internal Server Error."})
+      res.status(500).json({error: error.message})
    }
 }
