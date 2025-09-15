@@ -1,9 +1,9 @@
 import express from "express";
 import { fetch, create } from "../controller/customerController.js";
 
-const route = express.Router();
+const customerRoute = express.Router();
 
-route.post("/", create)
-route.get("/", fetch);
+customerRoute.post("/", create)
+customerRoute.get("/", fetch);
 
-export default route;
+export default customerRoute;
