@@ -2,13 +2,19 @@ import Customer from "../models/customerModel.js"
 
 export const create = async (req, res) => {
    try {
-      const { email } = req.body;
+      const { email, cpf } = req.body;
     
-      const customerExist = await Customer.findOne({ email });
+      const customerExist = await Customer.findOne({ $or: [{ email }, { cpf }] });
+
       if (customerExist) {
-         return res.status(400).json({ message: "Customer already exists." });
+         if (customerExist.email === email) {
+            return res.status(400).json({message: "E-mail já cadastrado."});
+         }
+         if (customerExist.cpf === cpf){
+            return res.status(400).json({message: "CPF já cadastrado."})
+         }
       }
-      
+
       const customer = new Customer(req.body);
       const savedCustomer = await customer.save();
       
