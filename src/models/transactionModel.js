@@ -36,7 +36,18 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     required: true,
   }
-});
+}, {
+  toJSON: {
+    transform: function (doc, ret) {
+      delete ret.__v;
+      delete ret.account;
+      
+      if (ret.date) {
+        ret.date = ret.date.toISOString().slice(0, 10);
+      }
+    }
+  }
+}); 
 
 transactionSchema.pre('save', async function(next) {
   if (this.isNew) {

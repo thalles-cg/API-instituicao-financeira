@@ -27,7 +27,14 @@ const customerSchema = new Schema({
   },
   accounts: [{ type: String, ref: 'Account' }]
 }, {
-  timestamps: true
+  timestamps: true,
+   toJSON: {
+    transform: function (doc, ret) {
+      delete ret.__v; 
+      delete ret.createdAt; 
+      delete ret.updatedAt; 
+    }
+  }
 });
 
 customerSchema.pre('save', async function(next) {
