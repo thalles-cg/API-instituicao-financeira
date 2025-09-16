@@ -26,7 +26,7 @@ export const createTransaction = async (transactionData) => {
     const newTransaction = new Transaction(transactionData);
     const savedTransaction = await newTransaction.save({ session });
     
-    account.transactions.push(newTransaction._id);
+    account.transactions.push(savedTransaction._id);
 
     await account.save({ session });
     
@@ -36,8 +36,20 @@ export const createTransaction = async (transactionData) => {
   } catch (error) {
     await session.abortTransaction();
     throw error;
-    
+
   } finally {
     session.endSession();
   }
+};
+
+export const getTransactionsByAccountId = async (accountId) => {
+  const accountExists = await Account.findById(accountId);
+  if (!accountExists) {
+    throw new Error('Account not found');
+  }
+
+  const transactions = await Transaction.find({ account: accountId })
+    .sort({ date: -1 }); 
+
+  return transactions;
 };

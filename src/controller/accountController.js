@@ -1,4 +1,5 @@
 import { createAccount, getAccountById } from "../services/accountService.js";
+import * as transactionService from '../services/transactionService.js';
 import Account from "../models/accountModel.js";
 
 export const create = async (req, res) => {
@@ -60,4 +61,24 @@ export const getById = async (req, res) => {
             error: error.message
         });
     }
+};
+
+export const getTransactionsByAccountId = async (req, res) => {
+  try {
+    const { accountId } = req.params;
+
+    const transactions = await transactionService.getTransactionsByAccountId(accountId);
+
+    res.status(200).json({
+      success: true,
+      message: "Account statement sent successfully",
+      data: transactions
+    });
+
+  } catch (error) {
+    if (error.message === 'Account not found') {
+      return res.status(404).json({ success: false, error: error.message });
+    }
+    res.status(500).json({ success: false, error: error.message });
+  }
 };
