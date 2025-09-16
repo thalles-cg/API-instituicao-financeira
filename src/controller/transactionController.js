@@ -1,7 +1,6 @@
 import Transaction from "../models/transactionModel.js";
 
 export const create = async (req, res) => {
-    console.log(req.body)
     try {
         const newTransaction = new Transaction(req.body);
         const savedTransaction = await newTransaction.save();

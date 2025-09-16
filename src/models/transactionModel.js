@@ -16,6 +16,12 @@ const transactionSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
+    validate: {
+      validator: function(value){
+        return value > 0;
+      },
+      message: "Transaction amount must be greater than zero."
+    }
   },
   amount: {
     type: Number,
