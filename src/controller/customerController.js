@@ -1,22 +1,9 @@
+import { createCustomer } from "../services/customerService.js";
 import Customer from "../models/customerModel.js"
 
 export const create = async (req, res) => {
    try {
-      const { email, cpf } = req.body;
-    
-      const customerExist = await Customer.findOne({ $or: [{ email }, { cpf }] });
-
-      if (customerExist) {
-         if (customerExist.email === email) {
-            return res.status(400).json({message: "This email is already in use."});
-         }
-         if (customerExist.cpf === cpf){
-            return res.status(400).json({message: "This CPF is already registered."})
-         }
-      }
-
-      const customer = new Customer(req.body);
-      const savedCustomer = await customer.save();
+      const savedCustomer = await createCustomer(req.body);
       
       res.status(201).json({
          success: true,
@@ -25,7 +12,16 @@ export const create = async (req, res) => {
       });
 
    } catch (error) {
-      res.status(500).json({error: error.message})
+      if (error.code === 11000) {
+           const duplicatedField = Object.keys(error.keyValue)[0];
+           if (duplicatedField === 'email') {
+               return res.status(400).json({ error: "This email is already registered." });
+           }
+           if (duplicatedField === 'cpf') {
+               return res.status(400).json({ error: "This CPF is already registered." });
+           }
+       }
+      res.status(500).json({error: error.message});
    }
 }
 

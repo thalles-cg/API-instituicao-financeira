@@ -1,27 +1,9 @@
+import { createAccount } from "../services/accountService.js";
 import Account from "../models/accountModel.js";
-import Customer from "../models/customerModel.js";
 
 export const create = async (req, res) => {
   try {
-    const { customer, type, branch, number, balance } = req.body;
-
-    const existingCustomer = await Customer.findById(customer);
-    if (!existingCustomer) {
-      return res.status(404).json({ error: 'Customer not found' });
-    }
-
-    const newAccount = new Account({
-      customer,
-      type,
-      branch,
-      number,
-      balance
-    });
-
-    const savedAccount = await newAccount.save(); 
-
-    existingCustomer.accounts.push(savedAccount._id);
-    await existingCustomer.save();
+    const savedAccount = await createAccount(req.body);
 
     const responseAccount = {
       _id: savedAccount._id,
@@ -34,6 +16,9 @@ export const create = async (req, res) => {
 
     res.status(201).json(responseAccount);
   } catch (err) {
+    if (err.message === 'Customer not found') {
+      return res.status(404).json({error: err.message})
+    }
     if (err.code === 11000){
       return res.status(400).json({error: "This combination of branch and number already exists."})
     }
@@ -50,7 +35,7 @@ export const fetch = async (req, res) => {
        message: "Accounts sent correctly",
        data: accounts
      });
-   } catch (error) {
+   } catch (error) {  
      res.status(500).json({error: error.message})
    }
 }
