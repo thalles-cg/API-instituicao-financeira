@@ -37,6 +37,7 @@ const transactionSchema = new mongoose.Schema({
     required: true,
   }
 }, {
+  timestamps: true,
   toJSON: {
     transform: function (doc, ret) {
       delete ret.__v;
