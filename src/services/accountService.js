@@ -22,3 +22,9 @@ export const createAccount = async (accountData) => {
 
     return savedAccount;
 };
+
+export const getAccountById = async (accountId) => {
+    const account = await Account.findById(accountId);
+
+    return account;
+};
