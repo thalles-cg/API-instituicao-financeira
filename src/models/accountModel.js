@@ -35,7 +35,16 @@ const accountSchema = new Schema({
     }
   ]
 }, {
-  timestamps: true
+  timestamps: true,
+
+  toJSON: {
+        transform: function (doc, ret) {
+            delete ret.__v;
+            delete ret.customer; 
+            delete ret.createdAt;
+            delete ret.updatedAt;
+        }
+    }
 });
 
 accountSchema.index({ branch: 1, number: 1 }, { unique: true });
