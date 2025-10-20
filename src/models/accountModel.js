@@ -4,7 +4,7 @@ const { Schema, model } = mongoose;
 
 const accountSchema = new Schema({
    _id: {type: String},
-   customer: {
+   customerId: {
     type: String,
     ref: 'Customer',
     required: true
@@ -47,20 +47,6 @@ const accountSchema = new Schema({
 });
 
 accountSchema.index({ branch: 1, number: 1 }, { unique: true });
-
-accountSchema.pre('save', async function(next) {
-  if (this.isNew) {
-    try {
-      const seqNumber = await CounterService.getNextSequence('account');
-      this._id = `acc_${seqNumber}`;
-      next();
-    } catch (err) {
-      next(err); 
-    }
-  } else {
-    next();
-  }
-});
 
 const Account = model('Account', accountSchema);
 

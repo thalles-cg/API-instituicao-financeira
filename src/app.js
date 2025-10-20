@@ -12,8 +12,8 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api/customer/", customerRoute);
-app.use("/api/account/", accountRoute);
-app.use("/api/transaction/", transactionRoute);
+app.use("/customers/", customerRoute);
+app.use("/accounts/", accountRoute);
+app.use("/transactions/", transactionRoute);
 
 export default app;

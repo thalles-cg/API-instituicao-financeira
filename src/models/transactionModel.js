@@ -4,7 +4,7 @@ const { Schema, model } = mongoose;
 
 const transactionSchema = new mongoose.Schema({
   _id: { type: String },
-  account: {
+  accountId: {
     type: String,
     ref: 'Account',
     required: true
@@ -49,21 +49,6 @@ const transactionSchema = new mongoose.Schema({
     }
   }
 }); 
-
-transactionSchema.pre('save', async function(next) {
-  if (this.isNew) {
-    try {
-      const seqNumber = await CounterService.getNextSequence('transaction');
-      this._id = `txn_${seqNumber}`;
-      next();
-    } catch (err) {
-      next(err); 
-    }
-  } else {
-    next();
-  }
-});
-
 
 const Transaction = model('Transaction', transactionSchema);
 

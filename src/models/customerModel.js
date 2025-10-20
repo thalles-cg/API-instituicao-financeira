@@ -37,21 +37,6 @@ const customerSchema = new Schema({
   }
 });
 
-customerSchema.pre('save', async function(next) {
-  if (this.isNew) {
-    try {
-      const seqNumber = await CounterService.getNextSequence('customer');
-      this._id = `cus_${seqNumber}`;
-      next();
-    } catch (err) {
-      next(err); 
-    }
-  } else {
-    next();
-  }
-});
-
-
 const Customer = model('Customer', customerSchema);
 
 export default Customer;
