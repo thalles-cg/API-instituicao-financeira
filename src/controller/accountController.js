@@ -63,6 +63,35 @@ export const getById = async (req, res) => {
     }
 };
 
+export const getBalanceById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const account = await getAccountById(id);
+
+    if (!account) {
+        return res.status(404).json({
+            success: false,
+            error: 'Account not found'
+        });
+    }
+
+    res.status(200).json({
+        success: true,
+        message: "Account balance sent successfully",
+        data: { 
+            balance: account.balance 
+        }
+    });
+
+  } catch (error) {
+      res.status(500).json({
+          success: false,
+          error: error.message
+      });
+  }
+};
+
 export const getTransactionsByAccountId = async (req, res) => {
   try {
     const { accountId } = req.params;
