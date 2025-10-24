@@ -1,7 +1,5 @@
 import express from "express";
-import customerRoute from "./routes/customerRoute.js"
-import accountRoute from "./routes/accountRoute.js"
-import transactionRoute from "./routes/transactionRoute.js";
+import openfinanceRoute from "./routes/openfinanceRoute.js";
 
 const app = express();
 app.use(express.json());
@@ -12,8 +10,6 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/customers/", customerRoute);
-app.use("/accounts/", accountRoute);
-app.use("/transactions/", transactionRoute);
+app.use("/openfinance", openfinanceRoute);
 
 export default app;
