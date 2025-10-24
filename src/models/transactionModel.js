@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
-import CounterService from '../services/counterService.js';
 const { Schema, model } = mongoose;
 
-const transactionSchema = new mongoose.Schema({
+const transactionSchema = new Schema({
   _id: { type: String },
   accountId: {
     type: String,

@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import { isValidCPF } from '../services/cpfValidatorService.js';
 import { isValidEmail } from '../services/emailValidatorService.js';
-import CounterService from '../services/counterService.js';
 const { Schema, model } = mongoose;
 
 const customerSchema = new Schema({

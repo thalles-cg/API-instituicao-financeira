@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
-import CounterService from '../services/counterService.js';
 const { Schema, model } = mongoose;
 
 const accountSchema = new Schema({
-   _id: {type: String},
+   _id: { type: String },
    customerId: {
     type: String,
     ref: 'Customer',
