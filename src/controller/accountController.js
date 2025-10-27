@@ -23,44 +23,44 @@ export const create = async (req, res) => {
 };
 
 export const fetch = async (req, res) => {
-   try {
-     const accounts = await Account.find().select('_id type branch number balance');
+  try {
+    const accounts = await Account.find().select('_id type branch number balance');
 
-     res.status(200).json({
-       success: true,
-       message: "Accounts sent correctly",
-       data: accounts
-     });
-   } catch (error) {  
-     res.status(500).json({ success: false, error: error.message });
-   }
+    res.status(200).json({
+      success: true,
+      message: "Accounts sent correctly",
+      data: accounts
+    });
+  } catch (error) {  
+    res.status(500).json({ success: false, error: error.message });
+  }
 }
 
 export const getById = async (req, res) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        const account = await getAccountById(id);
+    const account = await getAccountById(id);
 
-        if (!account) {
-            return res.status(404).json({
-                success: false,
-                error: 'Account not found'
-            });
-        }
-
-        res.status(200).json({
-            success: true,
-            message: "Account details sent correctly",
-            data: account
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
+    if (!account) {
+      return res.status(404).json({
+          success: false,
+          error: 'Account not found'
+      });
     }
+
+    res.status(200).json({
+      success: true,
+      message: "Account details sent correctly",
+      data: account
+    });
+
+  } catch (error) {
+    res.status(500).json({
+        success: false,
+        error: error.message
+    });
+  }
 };
 
 export const getBalanceById = async (req, res) => {
@@ -70,25 +70,25 @@ export const getBalanceById = async (req, res) => {
     const account = await getAccountById(id);
 
     if (!account) {
-        return res.status(404).json({
-            success: false,
-            error: 'Account not found'
-        });
+      return res.status(404).json({
+          success: false,
+          error: 'Account not found'
+      });
     }
 
     res.status(200).json({
-        success: true,
-        message: "Account balance sent successfully",
-        data: { 
-            balance: account.balance 
-        }
+      success: true,
+      message: "Account balance sent successfully",
+      data: { 
+        balance: account.balance 
+      }
     });
 
   } catch (error) {
-      res.status(500).json({
-          success: false,
-          error: error.message
-      });
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
   }
 };
 

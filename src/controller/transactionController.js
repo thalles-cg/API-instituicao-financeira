@@ -22,35 +22,35 @@ export const create = async (req, res) => {
 };
 
 export const fetch = async (req, res) => {
-   try {
-      const transactions = await Transaction.find();
+  try {
+    const transactions = await Transaction.find();
 
-      res.status(200).json({
-         success: true,
-         message: "Transacations sent correctly",
-         data: transactions
-      });
-   } catch (error) {
-      res.status(500).json({ success: false, error: error.message })
-   }
+    res.status(200).json({
+        success: true,
+        message: "Transacations sent correctly",
+        data: transactions
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message })
+  }
 }
 
 export const getByAccountId = async (req, res) => {
-    try {
-        const { accountId } = req.params;
+  try {
+    const { accountId } = req.params;
 
-        const transactions = await getTransactionsByAccountId(accountId);
-        
-        res.status(200).json({
-            success: true,
-            message: "Account statement sent successfully",
-            data: transactions
-        });
+    const transactions = await getTransactionsByAccountId(accountId);
+    
+    res.status(200).json({
+        success: true,
+        message: "Account statement sent successfully",
+        data: transactions
+    });
 
-    } catch (error) {
-        if (error.message === 'Account not found') {
-            return res.status(404).json({ success: false, error: error.message });
-        }
-        res.status(500).json({ success: false, error: 'Failed to fetch statement', details: error.message });
+  } catch (error) {
+    if (error.message === 'Account not found') {
+        return res.status(404).json({ success: false, error: error.message });
     }
+    res.status(500).json({ success: false, error: 'Failed to fetch statement', details: error.message });
+  }
 };
