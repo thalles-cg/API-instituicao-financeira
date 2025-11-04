@@ -1,4 +1,4 @@
-import { createCustomer } from "../services/customerService.js";
+import { createCustomer, getAllCustomers, getCustomerById, getCustomerAccounts } from "../services/customerService.js";
 import Customer from "../models/customerModel.js"
 
 export const create = async (req, res) => {
@@ -21,13 +21,13 @@ export const create = async (req, res) => {
             return res.status(400).json({success: false, error: "This CPF is already registered.", details: error.message });
          }
       }
-      res.status(500).json({ success: false, error: 'Failed to fetch customers', details: error.message });
+      res.status(500).json({ success: false, error: 'Failed to create customer', details: error.message });
   }
 };
 
 export const fetch = async (req, res) => {
    try {
-      const customers = await Customer.find();
+      const customers = await getAllCustomers();
 
       res.status(200).json({
          success: true,
@@ -36,5 +36,51 @@ export const fetch = async (req, res) => {
       });
    } catch (error) {
       res.status(500).json({ success: false, error: 'Failed to fetch customers', details: error.message });
+   }
+}
+
+export const getById = async (req, res) => {
+   try {
+      const { id } = req.params;
+      const customer = await getCustomerById(id);
+
+      if(!customer){
+         return res.status(404).json({ success: false, message: "Customer not found" })
+      }
+
+      res.status(200).json({
+         success: true,
+         message: "Customer sent correctly",
+         data: customer
+      });
+   } catch (error) {
+      if (error.name === 'CastError') { 
+         return res.status(400).json({ success: false, error: 'Invalid ID format' });
+      }
+
+      res.status(500).json({ success: false, error: 'Failed to fetch customer', details: error.message });
+   }
+}
+
+export const getAccountsById = async (req, res) => {
+   try {
+      const { id } = req.params;
+      const accounts = await getCustomerAccounts(id);
+
+      if(accounts === null){
+         return res.status(404).json({ success: false, message: "Customer not found" })
+      }
+
+      res.status(200).json({
+         success: true,
+         message: "Customer's accounts sent correctly",
+         data: accounts
+      });
+   } catch (error) {
+      if (error.name === 'CastError') {
+         return res.status(400).json({ success: false, error: 'Invalid ID format' });
+      }
+
+      res.status(500).json({ success: false, error: 'Failed to fetch customer\'s accounts', details: error.message });
    }
 }

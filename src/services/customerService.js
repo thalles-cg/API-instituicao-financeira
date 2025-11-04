@@ -31,3 +31,23 @@ export const createCustomer = async (customerData) => {
       session.endSession();
    }
 };
+
+export const getAllCustomers = async () => {
+  return await Customer.find();
+};
+
+
+export const getCustomerById = async (id) => {
+  const customer = await Customer.findById(id);
+  return customer;
+};
+
+export const getCustomerAccounts = async (id) => {
+  const customer = await Customer.findById(id).populate('accounts');
+  
+  if (!customer) {
+   return null; 
+  }
+  
+  return customer.accounts;
+};
