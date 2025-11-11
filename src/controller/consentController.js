@@ -34,6 +34,14 @@ export const create = async (req, res) => {
          return res.status(409).json({ message: error.message });
       }
 
+      if (error.code === 11000) {
+         const field = Object.keys(error.keyValue)[0];
+         return res.status(409).json({
+            success: false,
+            message: `A customer with this ${field} already exists.`
+         });
+      }
+
       res.status(500).json({ success: false, message: 'An internal server error occurred.' });
    }
 };
