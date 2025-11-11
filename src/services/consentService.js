@@ -5,17 +5,29 @@ import CounterService from './counterService.js';
 
 export const createConsent = async (consentData) => {
    const session = await mongoose.startSession(); 
-   
    session.startTransaction();
 
    try {
-      const customerExists = await Customer.findById(consentData.customerId).session(session);
-      if (!customerExists) {
-         throw new Error('Cannot create consent for a non-existent customer.');
+      const { cpf, fullName, email, expirationDateTime } = consentData;
+
+      let customer = await Customer.findOne({ cpf: cpf }).session(session);
+
+      if (!customer) {
+         const seqNumber = await CounterService.getNextSequence('customer', { session });
+         const newId = `cus_${seqNumber}`;
+
+         customer = new Customer({
+            _id: newId,
+            cpf: cpf,
+            name: fullName,
+            email: email
+         });
+         
+         await customer.save({ session: session });
       }
-      
+
       const existingActiveConsent = await Consent.findOne({
-         customerId: consentData.customerId,
+         customerId: customer._id,
          status: 'ACTIVE'
       }).session(session); 
 
@@ -27,8 +39,9 @@ export const createConsent = async (consentData) => {
       const newId = `con_${seqNumber}`;
 
       const newConsent = new Consent({
-         ...consentData,
-         _id: newId
+         _id: newId,
+         customerId: customer._id, 
+         expirationDateTime: expirationDateTime 
       });
       
       const savedConsent = await newConsent.save({ session });

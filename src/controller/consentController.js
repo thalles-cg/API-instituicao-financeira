@@ -2,15 +2,21 @@ import { createConsent, getByConsentId, getConsentByCustomerId, revokeConsentByI
 
 export const create = async (req, res) => {
    try {
-      const { customerId } = req.body;
+      const { cpf, fullName, email } = req.body;
 
-      if (!customerId) return res.status(400).json({ message: 'O campo customerId é obrigatório.' });
+      if (!cpf || !fullName || !email) {
+         return res.status(400).json({ 
+            message: 'Os campos cpf, fullName e email são obrigatórios.' 
+         });
+      }
       
       const expirationDateTime = new Date();
       expirationDateTime.setFullYear(expirationDateTime.getFullYear() + 1);
 
       const consentData = {
-         customerId,
+         cpf,
+         fullName,
+         email,
          expirationDateTime
       };
 
@@ -27,9 +33,7 @@ export const create = async (req, res) => {
       if (error.message === 'This customer already has an active consent.') {
          return res.status(409).json({ message: error.message });
       }
-      if (error.message === 'Cannot create consent for a non-existent customer.') {
-         return res.status(404).json({ success: false, message: error.message });
-      }
+
       res.status(500).json({ success: false, message: 'An internal server error occurred.' });
    }
 };
