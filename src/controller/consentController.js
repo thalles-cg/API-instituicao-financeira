@@ -25,7 +25,7 @@ export const create = async (req, res) => {
       res.status(201).json({
          success: true,
          message: "Consent created successfully.",
-         data: newConsent
+         data: newConsent.toObject()
       });
    } catch (error) {
       console.error('Error creating consent:', error);
