@@ -40,8 +40,8 @@ export const fetch = async (req, res) => {
 
 export const getById = async (req, res) => {
    try {
-      const { id } = req.params;
-      const customer = await getCustomerById(id);
+      const { customerId } = req.params;
+      const customer = await getCustomerById(customerId);
 
       if(!customer){
          return res.status(404).json({ success: false, message: "Customer not found" })
@@ -63,8 +63,8 @@ export const getById = async (req, res) => {
 
 export const getAccountsById = async (req, res) => {
    try {
-      const { id } = req.params;
-      const accounts = await getCustomerAccounts(id);
+      const { customerId } = req.params;
+      const accounts = await getCustomerAccounts(customerId);
 
       if(accounts === null){
          return res.status(404).json({ success: false, message: "Customer not found" })

@@ -6,7 +6,7 @@ const customerRoute = express.Router();
 customerRoute.post("/", create)
 customerRoute.get("/", fetch);
 customerRoute.get("/lookup/by-cpf/:cpf", lookupByCpf);
-customerRoute.get("/:id", getById);
-customerRoute.get("/:id/accounts", getAccountsById);
+customerRoute.get("/:customerId", getById);
+customerRoute.get("/:customerId/accounts", getAccountsById);
 
 export default customerRoute;

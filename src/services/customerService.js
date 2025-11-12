@@ -36,14 +36,18 @@ export const getAllCustomers = async () => {
   return await Customer.find();
 };
 
+export const getCustomerByCpf = async (cpf) => {
+   const customer = await Customer.findOne({ cpf: cpf });
+   return customer;
+};
 
-export const getCustomerById = async (id) => {
-  const customer = await Customer.findById(id);
+export const getCustomerById = async (customerId) => {
+  const customer = await Customer.findById(customerId);
   return customer;
 };
 
-export const getCustomerAccounts = async (id) => {
-  const customer = await Customer.findById(id).populate('accounts');
+export const getCustomerAccounts = async (customerId) => {
+  const customer = await Customer.findById(customerId).populate('accounts');
   
   if (!customer) {
    return null; 

@@ -15,7 +15,7 @@ export const create = async (req, res) => {
          customerId,
          permissions
       };
-      
+
       const newConsent = await createConsent(consentData);
 
       res.status(201).json({
@@ -51,13 +51,13 @@ export const create = async (req, res) => {
 
 export const getById = async (req, res) => {
    try { 
-      const { id } = req.params;
-      const consent = await getByConsentId(id);
+      const { consentId } = req.params;
+      const consent = await getByConsentId(consentId);
 
       if (!consent) {
          return res.status(404).json({
-               success: false,
-               message: 'Consent not found for the provided ID.'
+            success: false,
+            message: 'Consent not found for the provided ID.'
          });
       }
 
@@ -103,8 +103,8 @@ export const getByCustomerId = async (req, res) => {
 
 export const revoke = async (req, res) => {
    try {
-      const { id } = req.params;
-      const revokedConsent = await revokeConsentById(id);
+      const { consentId } = req.params;
+      const revokedConsent = await revokeConsentById(consentId);
 
       res.status(200).json({
          success: true,

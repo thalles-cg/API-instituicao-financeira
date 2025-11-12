@@ -4,8 +4,8 @@ import { create, getByCustomerId, getById, revoke } from "../controller/consentC
 const consentRoute = express.Router();
 
 consentRoute.post("/", create)
-consentRoute.get("/:id", getById);
+consentRoute.get("/:consentId", getById);
 consentRoute.get("/customer/:customerId", getByCustomerId);
-consentRoute.delete("/:id", revoke);
+consentRoute.delete("/:consentId", revoke);
 
 export default consentRoute;

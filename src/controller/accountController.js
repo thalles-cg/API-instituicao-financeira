@@ -38,9 +38,9 @@ export const fetch = async (req, res) => {
 
 export const getById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { accountId } = req.params;
 
-    const account = await getAccountById(id);
+    const account = await getAccountById(accountId);
 
     if (!account) {
       return res.status(404).json({
@@ -57,17 +57,17 @@ export const getById = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({
-        success: false,
-        error: error.message
+      success: false,
+      error: error.message
     });
   }
 };
 
 export const getBalanceById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { accountId } = req.params;
 
-    const account = await getAccountById(id);
+    const account = await getAccountById(accountId);
 
     if (!account) {
       return res.status(404).json({
