@@ -9,11 +9,21 @@ const consentSchema = new Schema({
       required: true,
       index: true 
    },
+   permissions: [{
+     type: String,
+     required: true,
+     enum: [ 
+       'ACCOUNTS_READ',
+       'CUSTOMER_DATA_READ',
+       'BALANCES_READ',
+       'TRANSACTIONS_READ'
+     ]
+   }],
    status: {
       type: String,
       required: true,
-      enum: ['ACTIVE', 'REVOKED', 'EXPIRED'],
-      default: 'ACTIVE'
+      enum: ['AWAITING_AUTHORIZATION', 'AUTHORIZED', 'REJECTED', 'REVOKED'],
+      default: 'AWAITING_AUTHORIZATION'
    },
    creationDateTime: {
       type: Date,
