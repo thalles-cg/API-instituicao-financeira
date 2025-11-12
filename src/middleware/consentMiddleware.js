@@ -1,7 +1,5 @@
 import Consent from '../models/consentModel.js';
 import Account from '../models/accountModel.js';
-import Customer from '../models/customerModel.js'; 
-import mongoose from 'mongoose';
 
 /**
  * Factory function que cria o middleware de checagem de consentimento.
@@ -12,16 +10,9 @@ export const checkConsent = (requiredPermissions = []) => {
       try {
          let customerId;
 
-         // Caso A: A rota é /customers/:customerId/...
          if (req.params.customerId) {
             customerId = req.params.customerId; 
          
-         } else if (req.params.id && !req.params.accountId) { 
-            const isCustomer = await Customer.findById(req.params.id);
-            if (isCustomer) {
-               customerId = req.params.id;
-            }
-
          } else if (req.params.accountId) {
             const account = await Account.findById(req.params.accountId).select('customerId');
             
