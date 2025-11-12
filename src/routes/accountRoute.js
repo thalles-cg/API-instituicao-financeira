@@ -7,6 +7,5 @@ accountRoute.post("/", create)
 accountRoute.get("/", fetch);
 accountRoute.get("/:accountId", getById);
 accountRoute.get("/:accountId/balance", getBalanceById);
-accountRoute.get("/:accountId/transactions", getTransactionsByAccountId);
 
 export default accountRoute;
