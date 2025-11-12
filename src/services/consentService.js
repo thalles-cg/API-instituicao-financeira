@@ -66,7 +66,7 @@ export const getConsentByCustomerId = async (customerId) => {
 
    const consent = await Consent.findOne({ 
       customerId: customerId,
-      status: 'ACTIVE' 
+      status: 'AUTHORIZED' 
    });
 
    return consent;
@@ -79,7 +79,7 @@ export const revokeConsentById = async (consentId) => {
       throw new Error('Consent not found.');
    }
 
-   if (consent.status !== 'ACTIVE') {
+   if (consent.status !== 'AUTHORIZED') {
       throw new Error('Only active consents can be revoked.');
    }
 
