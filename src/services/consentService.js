@@ -8,52 +8,44 @@ export const createConsent = async (consentData) => {
    session.startTransaction();
 
    try {
-      const { cpf, fullName, email, expirationDateTime } = consentData;
+      const { customerId, permissions } = consentData;
 
-      let customer = await Customer.findOne({ cpf: cpf }).session(session);
-
+      const customer = await Customer.findById(customerId).session(session);
       if (!customer) {
-         const seqNumber = await CounterService.getNextSequence('customer', { session });
-         const newId = `cus_${seqNumber}`;
-
-         customer = new Customer({
-            _id: newId,
-            cpf: cpf,
-            name: fullName,
-            email: email
-         });
-         
-         await customer.save({ session: session });
+         throw new Error('Customer not found.');
       }
 
       const existingActiveConsent = await Consent.findOne({
          customerId: customer._id,
-         status: 'ACTIVE'
+         status: 'AUTHORIZED'
       }).session(session); 
 
       if (existingActiveConsent) {
          throw new Error('This customer already has an active consent.');
       }
 
+      const expirationDateTime = new Date();
+      expirationDateTime.setFullYear(expirationDateTime.getFullYear() + 1);
+
       const seqNumber = await CounterService.getNextSequence('consent', { session });
       const newId = `con_${seqNumber}`;
 
       const newConsent = new Consent({
          _id: newId,
-         customerId: customer._id, 
-         expirationDateTime: expirationDateTime 
+         customerId: customer._id,
+         permissions: permissions, 
+         expirationDateTime: expirationDateTime,
+         status: 'AUTHORIZED'
       });
-      
+
       const savedConsent = await newConsent.save({ session });
 
       await session.commitTransaction();
-      
-      return savedConsent;
 
+      return savedConsent;
    } catch (error) {
       await session.abortTransaction();
-      
-      throw error;
+      throw error; 
 
    } finally {
       session.endSession();
