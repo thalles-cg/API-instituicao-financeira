@@ -1,5 +1,4 @@
-import { createCustomer, getAllCustomers, getCustomerById, getCustomerAccounts } from "../services/customerService.js";
-import Customer from "../models/customerModel.js"
+import { createCustomer, getAllCustomers, getCustomerById, getCustomerAccounts, getCustomerByCpf } from "../services/customerService.js";
 
 export const create = async (req, res) => {
    try {
@@ -82,5 +81,23 @@ export const getAccountsById = async (req, res) => {
       }
 
       res.status(500).json({ success: false, error: 'Failed to fetch customer\'s accounts', details: error.message });
+   }
+}
+
+export const lookupByCpf = async (req, res) => {
+   try {
+      const { cpf } = req.params;
+      const customer = await getCustomerByCpf(cpf);
+
+      if(!customer){
+         return res.status(404).json({ success: false, message: "Customer not found" })
+      }
+
+      res.status(200).json({
+         _id: customer._id,
+         cpf: customer.cpf
+      });
+   } catch (error) {
+      res.status(500).json({ success: false, error: 'Failed to lookup customer', details: error.message });
    }
 }
