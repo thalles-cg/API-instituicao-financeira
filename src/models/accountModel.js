@@ -16,7 +16,7 @@ const accountSchema = new Schema({
   branch: {
     type: String,
     required: true,
-    match: /^[0-9]{4}$/ 
+    match: /^[0-9]{3}$/ 
   },
   number: {
     type: String,
