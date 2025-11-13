@@ -12,21 +12,21 @@ openfinanceRoute.get("/", (req, res) => {
       version: "1.0.0", 
       status: "online",
       endpoints: {
-      public: [
-         "GET /openfinance/",
-         "GET /openfinance/customers/lookup/by-cpf/:cpf"
-      ],
-      consent: [
-         "POST /openfinance/consents",
-         "GET /openfinance/consents/:consentId",
-         "DELETE /openfinance/consents/:consentId"
-      ],
-      protected: [
-         "GET /openfinance/customers/:customerId",
-         "GET /openfinance/customers/:customerId/accounts",
-         "GET /openfinance/accounts/:accountId/balance",
-         "GET /openfinance/transactions/:accountId"
-      ]
+         public: [
+            "GET /openfinance/",
+            "GET /openfinance/customers/lookup/by-cpf/:cpf"
+         ],
+         consent: [
+            "POST /openfinance/consents",
+            "GET /openfinance/consents/:consentId",
+            "DELETE /openfinance/consents/:consentId"
+         ],
+         protected: [
+            "GET /openfinance/customers/:customerId",
+            "GET /openfinance/customers/:customerId/accounts",
+            "GET /openfinance/accounts/:accountId/balance",
+            "GET /openfinance/transactions/:accountId"
+         ]
       }
    });
 });
