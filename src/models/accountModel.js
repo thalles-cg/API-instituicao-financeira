@@ -20,8 +20,7 @@ const accountSchema = new Schema({
   },
   number: {
     type: String,
-    required: true,
-    match: /^[0-9]{5}-[0-9]{1}$/ 
+    required: true
   },
   balance: {
     type: Number,
