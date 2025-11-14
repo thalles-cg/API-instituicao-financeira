@@ -16,10 +16,7 @@ const customerSchema = new Schema({
     type: String, 
     required: true, 
     unique: true,
-    validate: {
-      validator: isValidCPF,
-      message: props => `${props.value} is not a valid CPF!`
-    }
+    match: [/^\d{11}$/, 'CPF must contain 11 digits.'] 
   },
   email: {
     type: String,
