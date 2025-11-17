@@ -1,4 +1,4 @@
-import { createAccount, getAccountById } from "../services/accountService.js";
+import { createAccount, getAccountById, getAccountsByCustomerId } from "../services/accountService.js";
 import * as transactionService from '../services/transactionService.js';
 import Account from "../models/accountModel.js";
 
@@ -40,12 +40,22 @@ export const getById = async (req, res) => {
   try {
     const { accountId } = req.params;
 
+    if (accountId.startsWith('cus_')) {
+      const accounts = await getAccountsByCustomerId(accountId);
+      
+      if (!accounts || accounts.length === 0) {
+        return res.status(404).json({ success: false, error: 'No accounts found for this customer' });
+      } 
+
+      return res.status(200).json(accounts);
+    }
+
     const account = await getAccountById(accountId);
 
     if (!account) {
       return res.status(404).json({
-          success: false,
-          error: 'Account not found'
+        success: false,
+        error: 'Account not found'
       });
     }
 

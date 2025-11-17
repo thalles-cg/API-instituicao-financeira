@@ -49,3 +49,8 @@ export const getAccountById = async (accountId) => {
 
     return account;
 };
+
+export const getAccountsByCustomerId = async (customerId) => {
+  const accounts = await Account.find({ customerId: customerId });
+  return accounts; 
+};
