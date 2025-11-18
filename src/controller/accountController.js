@@ -86,13 +86,7 @@ export const getBalanceById = async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Account balance sent successfully",
-      data: { 
-        balance: account.balance 
-      }
-    });
+    res.status(200).json({balance: account.balance});
 
   } catch (error) {
     res.status(500).json({

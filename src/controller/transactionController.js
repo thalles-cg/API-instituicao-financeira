@@ -41,11 +41,7 @@ export const getByAccountId = async (req, res) => {
 
     const transactions = await getTransactionsByAccountId(accountId);
     
-    res.status(200).json({
-        success: true,
-        message: "Account statement sent successfully",
-        data: transactions
-    });
+    res.status(200).json(transactions);
 
   } catch (error) {
     if (error.message === 'Account not found') {
