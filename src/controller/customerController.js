@@ -70,7 +70,7 @@ export const getAccountsById = async (req, res) => {
          return res.status(404).json({ success: false, message: "Customer not found" })
       }
 
-      res.status(200).json({data: accounts});
+      res.status(200).json(accounts);
    } catch (error) {
       if (error.name === 'CastError') {
          return res.status(400).json({ success: false, error: 'Invalid ID format' });
