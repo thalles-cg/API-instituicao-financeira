@@ -10,15 +10,15 @@ const consentSchema = new Schema({
       index: true 
    },
    permissions: [{
-   type: String,
-   required: true,
-   enum: [ 
+      type: String,
+      required: true,
+      enum: [ 
          'ACCOUNTS_READ',
          'CUSTOMER_DATA_READ',
          'BALANCES_READ',
          'TRANSACTIONS_READ',
          'INVESTMENTS_READ'
-   ]
+      ]
    }],
    status: {
       type: String,
