@@ -1,5 +1,6 @@
 import Consent from '../models/consentModel.js';
 import Account from '../models/accountModel.js';
+import { InvestmentPosition } from "../models/investments/investmentModel.base.js";
 
 /**
  * Factory function que cria o middleware de checagem de consentimento.
@@ -11,19 +12,37 @@ export const checkConsent = (requiredPermissions = []) => {
          let customerId;
 
          if (req.params.customerId) {
-            customerId = req.params.customerId; 
-         
+            customerId = req.params.customerId;
+
          } else if (req.params.accountId) {
             const account = await Account.findById(req.params.accountId).select('customerId');
+            if (!account) return res.status(404).json({ success: false, error: 'Account not found.' });
+            customerId = account.customerId;
+         
+         } else if (req.params.investmentId) {
+            const investment = await InvestmentPosition.findById(req.params.investmentId);
+            if (!investment) return res.status(404).json({ success: false, error: 'Investment not found.' });
             
+            const account = await Account.findById(investment.accountId).select('customerId');
+    
             if (!account) {
-               return res.status(404).json({ success: false, error: 'Account not found.' });
+               return res.status(404).json({ success: false, error: 'Associated account not found for this investment.' });
             }
+
+            customerId = account.customerId;
+            req.preLoadedResource = investment; 
+
+         } else if (req.body && req.body.accountId) {
+            const account = await Account.findById(req.body.accountId).select('customerId');
+            if (!account) return res.status(404).json({ success: false, error: 'Account provided in body not found.' });
             customerId = account.customerId;
          }
-
+         
          if (!customerId) {
-            return res.status(400).json({ success: false, error: 'Could not determine Customer ID from route parameters.' });
+            return res.status(400).json({ 
+               success: false, 
+               error: 'Context undefined. Please provide customerId (params), accountId (params/body) or investmentId.' 
+            });
          }
 
          const consent = await Consent.findOne({
