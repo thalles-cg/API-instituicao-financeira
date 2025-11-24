@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { InvestmentPosition } from "../models/investments/investmentModel.base.js";
 import { InvestmentProduct } from "../models/products/productModel.base.js";
+import Account from "../models/accountModel.js";
 import CounterService from "./counterService.js";
 
 export const createInvestment = async (data) => {
@@ -19,8 +20,21 @@ export const createInvestment = async (data) => {
       }
 
       if (data.amount < product.minInvestmentAmount) {
-            throw new Error(`O investimento mínimo para este produto é R$ ${product.minInvestmentAmount}`);
+         throw new Error(`O investimento mínimo para este produto é R$ ${product.minInvestmentAmount}`);
       }
+
+      const account = await Account.findById(data.accountId).session(session);
+
+      if (!account) {
+         throw new Error("Conta não encontrada.");
+      }
+
+      if (account.balance < data.amount) {
+         throw new Error(`Saldo insuficiente. Saldo atual: R$ ${account.balance}`);
+      }
+
+      account.balance -= data.amount;
+      await account.save({ session });
 
       const seqNumber = await CounterService.getNextSequence("investment", { session });
       const newId = `inv_${seqNumber}`;
@@ -28,7 +42,7 @@ export const createInvestment = async (data) => {
       const newPosition = new InvestmentPosition({
          _id: newId,
          accountId: data.accountId,
-         productId: data.productId, // Salva apenas o ID
+         productId: data.productId, 
          investedAmount: data.amount,
          quantity: data.quantity || 1,
          purchaseDate: new Date()
