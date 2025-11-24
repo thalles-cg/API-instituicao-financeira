@@ -1,46 +1,40 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const baseOptions = {
-   discriminatorKey: "productType",
-   timestamps: true,
-   toJSON: {
-      transform: (doc, ret) => {
-         delete ret.__v;
-      }
-   }
-};
-
-const InvestmentPositionBaseSchema = new Schema({
-   _id: { type: String },
+const positionSchema = new Schema({
+   _id: { type: String }, 
    accountId: {
       type: String,
       ref: "Account",
       required: true,
       index: true
    },
-   name: {
+   productId: {
       type: String,
+      ref: "InvestmentProduct",
       required: true
    },
-   institution: {
-      type: String,
-      required: true,
-      index: true
+   investedAmount: { 
+      type: Number, 
+      required: true, 
+      min: 0 
    },
-   currentAmount: {
-      type: Number,
-      required: true,
-      min: 0
-   },
-   purchaseAmount: {
-      type: Number,
-      required: false, 
-      min: 0
+   quantity: { 
+      type: Number, 
+      default: 1 
+   }, 
+   purchaseDate: { 
+      type: Date, 
+      default: Date.now 
    }
-}, baseOptions);
+}, { timestamps: true });
 
-export const InvestmentPosition = model(
-   "InvestmentPosition",
-   InvestmentPositionBaseSchema
-);
+positionSchema.pre(/^find/, function(next) {
+   this.populate({
+      path: 'productId',
+      select: 'name productType rateType rateValue ticker maturityDate' 
+   });
+   next();
+});
+
+export const InvestmentPosition = model("InvestmentPosition", positionSchema);
