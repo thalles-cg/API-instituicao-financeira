@@ -4,6 +4,7 @@ import accountRoute from "./accountRoute.js";
 import transactionRoute from "./transactionRoute.js";
 import consentRoute from "./consentRoute.js";
 import investmentRoute from "./investmentRoute.js";
+import productRoute from "./productRoute.js";
 
 const openfinanceRoute = express.Router();
 
@@ -37,5 +38,6 @@ openfinanceRoute.use("/accounts", accountRoute);
 openfinanceRoute.use("/transactions", transactionRoute);
 openfinanceRoute.use("/consents", consentRoute);
 openfinanceRoute.use("/investments", investmentRoute);
+openfinanceRoute.use("/products", productRoute);
 
 export default openfinanceRoute;
