@@ -14,7 +14,7 @@ dotenv.config();
 
 const seedProducts = async () => {
    try {
-      await mongoose.connect(process.env.MONGO_URI); 
+      await mongoose.connect(process.env.MONGO_URL);
 
       await InvestmentProduct.deleteMany({});
 
@@ -70,6 +70,35 @@ const seedProducts = async () => {
             network: "Bitcoin",
             description: "Reserva de valor digital descentralizada"
          }),
+         new FiiProduct({
+            _id: "prod_fii_hglg11",
+            name: "CSHG Logística",
+            institution: "B3",
+            riskLevel: "MEDIUM",
+            ticker: "HGLG11",
+            admin: "Credit Suisse",
+            segment: "Logística"
+         }),
+         new FiiProduct({
+            _id: "prod_fii_mxrf11",
+            name: "Maxi Renda",
+            institution: "B3",
+            riskLevel: "MEDIUM",
+            ticker: "MXRF11",
+            admin: "XP Vista Asset",
+            segment: "Papel"
+         }),
+         new FundProduct({
+            _id: "prod_fund_alaska",
+            name: "Alaska Black FIC FIA",
+            institution: "Alaska Asset",
+            riskLevel: "HIGH",
+            cnpj: "12987123000199",
+            adminFee: 2.0,
+            performanceFee: 20.0,
+            category: "Ações Livre",
+            minInvestmentAmount: 500
+         }),
          new TreasuryProduct({
             _id: "prod_treasury_selic_2029",
             name: "Tesouro Selic 2029",
@@ -93,9 +122,8 @@ const seedProducts = async () => {
             minInvestmentAmount: 30
          })
       ];
-
       await InvestmentProduct.insertMany(products);
-      console.log(`✅ ${products.length} produtos inseridos com sucesso!`);
+      console.log(`${products.length} produtos inseridos com sucesso!`);
 
       process.exit(0);
 
