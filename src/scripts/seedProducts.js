@@ -20,6 +20,18 @@ const seedProducts = async () => {
 
       const products = [
          new CdbProduct({
+            _id: "prod_cdb_thalles_flex",
+            name: "CDB Flex IF-Thalles",
+            institution: "IF-Thalles",
+            riskLevel: "LOW",
+            rateType: "CDI",
+            rateValue: 105,
+            maturityDate: new Date("2026-06-30"),
+            liquidity: "D+0",
+            issuer: "IF-Thalles",
+            minInvestmentAmount: 100
+         }),
+         new CdbProduct({
             _id: "prod_cdb_master_120",
             name: "CDB Banco Master 120% CDI",
             institution: "Banco Master",
