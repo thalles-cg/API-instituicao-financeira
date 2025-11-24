@@ -49,7 +49,7 @@ const seedProducts = async () => {
             institution: "Itaú",
             riskLevel: "LOW",
             rateType: "CDI",
-            rateValue: 100,
+            rateValue: 90,
             maturityDate: new Date("2025-12-31"),
             liquidity: "D+0",
             issuer: "Itaú Unibanco",
