@@ -2,12 +2,27 @@ import * as InvestmentService from "../services/investmentService.js";
 
 export const createInvestment = async (req, res) => {
    try {
-      if (!req.body.accountId) {
-         return res.status(400).json({ success: false, error: "accountId is required" });
+      const { accountId, productId, amount, quantity } = req.body;
+
+      if (!accountId || !productId || !amount) {
+         return res.status(400).json({ 
+            success: false, 
+            error: "Campos obrigatórios: 'accountId', 'productId' e 'amount'." 
+         });
+      }
+
+      if (amount <= 0) {
+         return res.status(400).json({ 
+            success: false, 
+            error: "O valor do investimento (amount) deve ser positivo." 
+         });
       }
 
       const investmentData = {
-         ...req.body,
+         accountId,
+         productId,
+         amount,
+         quantity: quantity || 1,
          customerId: req.customerId 
       };
 
@@ -19,9 +34,11 @@ export const createInvestment = async (req, res) => {
       });
 
    } catch (error) {
-      return res.status(400).json({
+      const statusCode = error.message.includes("não encontrado") || error.message.includes("mínimo") ? 400 : 500;
+      
+      return res.status(statusCode).json({
          success: false,
-         error: "Failed to create investment",
+         error: "Falha ao realizar investimento",
          details: error.message
       });
    }
