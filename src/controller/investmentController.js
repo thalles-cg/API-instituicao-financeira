@@ -22,8 +22,7 @@ export const createInvestment = async (req, res) => {
          accountId,
          productId,
          amount,
-         quantity: quantity || 1,
-         customerId: req.customerId 
+         quantity: quantity || 1
       };
 
       const investment = await InvestmentService.createInvestment(investmentData);
