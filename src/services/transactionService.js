@@ -3,9 +3,12 @@ import Transaction from '../models/transactionModel.js';
 import Account from '../models/accountModel.js';
 import CounterService from './counterService.js';
 
-export const createTransaction = async (transactionData) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
+export const createTransaction = async (transactionData, externalSession = null) => {
+  const session = externalSession || await mongoose.startSession();
+  
+  if (!externalSession) {
+    session.startTransaction();
+  }
 
   try {
     const { accountId, amount, type } = transactionData;
@@ -36,15 +39,21 @@ export const createTransaction = async (transactionData) => {
     account.transactions.push(savedTransaction._id);
     await account.save({ session });
     
-    await session.commitTransaction();
+    if (!externalSession) {
+      await session.commitTransaction();
+    }
     return savedTransaction;
 
   } catch (error) {
-    await session.abortTransaction();
+    if (!externalSession) {
+      await session.abortTransaction();
+    }
     throw error;
 
   } finally {
-    session.endSession();
+    if (!externalSession) {
+      session.endSession();
+    }
   }
 };
 
