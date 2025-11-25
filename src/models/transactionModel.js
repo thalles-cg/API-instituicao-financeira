@@ -8,6 +8,10 @@ const transactionSchema = new Schema({
     ref: 'Account',
     required: true
   },
+  operationId: {
+    type: String, 
+    index: true   
+  },
   date: {
     type: Date,
     default: Date.now
