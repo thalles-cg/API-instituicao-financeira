@@ -4,6 +4,7 @@ import { InvestmentPosition } from "../models/investments/investmentModel.base.j
 import { InvestmentProduct } from "../models/products/productModel.base.js";
 import Account from "../models/accountModel.js";
 import CounterService from "./counterService.js";
+import * as TransactionService from "./transactionService.js";
 
 export const createInvestment = async (data) => {
    const session = await mongoose.startSession();
