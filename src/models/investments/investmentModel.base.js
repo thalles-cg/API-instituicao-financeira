@@ -9,6 +9,12 @@ const positionSchema = new Schema({
       required: true,
       index: true
    },
+   customerId: {
+      type: String,
+      ref: "Customer",
+      required: true,
+      index: true
+   },
    productId: {
       type: String,
       ref: "InvestmentProduct",
