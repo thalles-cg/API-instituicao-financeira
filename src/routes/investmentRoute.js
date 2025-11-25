@@ -1,5 +1,5 @@
 import express from "express";
-import { createInvestment, getInvestmentById, getInvestmentsByAccount } from "../controller/investmentController.js";
+import { createInvestment, getInvestmentById, getInvestmentsByAccount, redeemInvestment } from "../controller/investmentController.js";
 
 import { checkConsent } from "../middleware/consentMiddleware.js";
 
@@ -9,6 +9,12 @@ investmentRoute.post(
    "/", 
    checkConsent(["INVESTMENTS_WRITE"]), 
    createInvestment
+);
+
+investmentRoute.post(
+   "/:investmentId/redeem", 
+   checkConsent(["INVESTMENTS_WRITE"]), 
+   redeemInvestment
 );
 
 investmentRoute.get(
