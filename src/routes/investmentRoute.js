@@ -5,17 +5,9 @@ import { checkConsent } from "../middleware/consentMiddleware.js";
 
 const investmentRoute = express.Router();
 
-investmentRoute.post(
-   "/", 
-   checkConsent(["INVESTMENTS_WRITE"]), 
-   createInvestment
-);
+investmentRoute.post("/", createInvestment);
 
-investmentRoute.post(
-   "/:investmentId/redeem", 
-   checkConsent(["INVESTMENTS_WRITE"]), 
-   redeemInvestment
-);
+investmentRoute.post("/:investmentId/redeem", redeemInvestment);
 
 investmentRoute.get(
    "/accounts/:accountId", 

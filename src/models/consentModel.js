@@ -17,8 +17,7 @@ const consentSchema = new Schema({
          'CUSTOMER_DATA_READ',
          'BALANCES_READ',
          'TRANSACTIONS_READ',
-         'INVESTMENTS_READ',
-         'INVESTMENTS_WRITE'
+         'INVESTMENTS_READ'
       ]
    }],
    status: {
