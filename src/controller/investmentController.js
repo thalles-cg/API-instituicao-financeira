@@ -44,6 +44,41 @@ export const createInvestment = async (req, res) => {
    }
 };
 
+export const redeemInvestment = async (req, res) => {
+   try {
+      const { investmentId } = req.params;
+      const { amount, targetAccountId } = req.body;
+
+      if (!amount || amount <= 0) {
+         return res.status(400).json({ 
+            success: false, 
+            error: "O valor do resgate deve ser positivo." 
+         });
+      }
+
+      const result = await InvestmentService.redeemInvestment({
+         investmentId,
+         amount,
+         targetAccountId 
+      });
+
+      return res.status(200).json({
+         success: true,
+         message: "Resgate realizado com sucesso.",
+         data: result
+      });
+
+   } catch (error) {
+      const statusCode = error.message.includes("não encontrado") || 
+         error.message.includes("insuficiente") ? 400 : 500;
+
+      return res.status(statusCode).json({ 
+         success: false, 
+         error: error.message 
+      });
+   }
+};
+
 export const getInvestmentById = async (req, res) => {
    const { investmentId } = req.params;
    const investment = await InvestmentService.getInvestmentById(investmentId);
